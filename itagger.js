@@ -25,6 +25,8 @@ var tagger=function(id,img){
 	// and measure real width & height onload
 	self.canvasheight=480;
 	self.canvaswidth=800;
+	self.centerw=400;
+	self.centerh=240;
 	self.totalrotation=0;
 	self.img=self.paper.image(img,0,0,self.canvaswidth,self.canvasheight);
 	
@@ -47,7 +49,7 @@ tagger.prototype={
 	// draws random shape
 	drawShape:function(){
 		var self=this;
-		var shapetype=Math.floor(Math.random()*2);
+		var shapetype=Math.floor(Math.random()*3);
 		switch(shapetype){
 			case 0:
 				// draw circle
@@ -70,6 +72,17 @@ tagger.prototype={
 				e.rotate(self.totalrotation);
 				self.shapegroup.push(e);
 				break;
+			case 2:
+				// draw rectangle
+				var x=Math.floor(Math.random()*self.canvaswidth);
+				var y=Math.floor(Math.random()*self.canvasheight);
+				var w=Math.floor(Math.random()*100);
+				var h=Math.floor(Math.random()*100);
+				var r=self.paper.rect(x,y,w,h);
+				r.rotate(self.totalrotation);
+				// add to group
+				self.shapegroup.push(r);
+				break;
 		}
 		
 	},
@@ -78,7 +91,7 @@ tagger.prototype={
 		if(!degree) degree=15;
 		
 		// animate the set in order to rotate
-		var rotatestring=""+(degree+self.totalrotation);
+		var rotatestring=""+(degree+self.totalrotation)+" "+self.centerw+" "+self.centerh;
 		self.shapegroup.animate({rotation:rotatestring},1000);
 		self.totalrotation=(degree+self.totalrotation);
 		// self.img.rotate(degree);
